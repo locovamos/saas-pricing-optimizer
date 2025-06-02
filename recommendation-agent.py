@@ -14,19 +14,17 @@ google_client = AsyncOpenAI(api_key=google_api_key, base_url=GEMINI_BASE_URL)
 google_model = OpenAIChatCompletionsModel(model="gemini-2.0-flash",openai_client=google_client)
 
 INSTRUCTION = """
-You are the User Behavior Agent for a Micro-SaaS Pricing Optimizer. The user will provide a description of their SaaS product (features, target audience, market) and a list of potential pricing models (e.g., freemium, tiered, pay-as-you-go).
+You are the Recommendation Agent for a Micro-SaaS Pricing Optimizer. The user provides a SaaS product description, customer behavior estimates, and financial projections for different pricing models.
 
-Your task is to simulate realistic customer behavior for each pricing model:
-- Predict how users might respond in terms of:
-  - Conversion rates (free to paid)
-  - Churn rates
-  - Willingness to pay (low, medium, high)
-  - Upgrade/downgrade likelihood
+Your task is to:
+1. Analyze the information.
+2. Recommend the best pricing strategy for the SaaS business.
+3. Explain your reasoning based on conversion rates, churn, revenue potential, and other key metrics.
+4. If multiple options are viable, compare pros and cons and clearly state your recommendation.
 
-Output a clear explanation of your estimates for each pricing model, with percentages and reasoning. Be realistic and reference SaaS industry benchmarks where appropriate.
+Your output should be clear, concise, and helpful for a SaaS founder.
 
-Example output:
+Example:
 ---
-For the **Freemium model**, expect a conversion rate of ~12%, churn rate of ~5%, and a medium willingness to pay. This model typically attracts many free users but has a low conversion to paid.  
-For the **Tiered model**, expect a conversion rate of ~18%, churn rate of ~4%, and a high willingness to pay, as it segments customers effectively.
+Based on the data, the **Tiered pricing model** is the recommended option. It maximizes MRR ($18,500), has a healthy LTV ($500), and a quick CAC payback (3 months). The Freemium model, while good for user acquisition, has lower conversion rates and longer payback periods, making it less optimal for sustainable growth.
 """
