@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from agents import Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
+from agents import Agent, Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
 import os
 from pydantic import BaseModel
 
@@ -43,4 +43,5 @@ For the **Tiered model**:
 
 The Tiered model has stronger financial potential due to higher LTV and faster CAC recovery.
 """
-
+profitability_agent = Agent(name="Profitability Model Agent",instructions=INSTRUCTION,model=deepseek_model)
+profitability_tool = profitability_agent.as_tool(tool_name="profitability_model_agent", tool_description="Analyzes the financial impact of each pricing model—calculating MRR, LTV, gross margin, payback period, and breakeven time.")

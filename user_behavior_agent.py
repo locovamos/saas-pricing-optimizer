@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from agents import Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
+from agents import Agent, Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
 import os
 from pydantic import BaseModel
 
@@ -30,3 +30,6 @@ Example output:
 For the **Freemium model**, expect a conversion rate of ~12%, churn rate of ~5%, and a medium willingness to pay. This model typically attracts many free users but has a low conversion to paid.  
 For the **Tiered model**, expect a conversion rate of ~18%, churn rate of ~4%, and a high willingness to pay, as it segments customers effectively.
 """
+
+user_behavior_agent = Agent(name="User Behavior Agent", instructions=INSTRUCTION, model=google_model)
+tool_user_behave = user_behavior_agent.as_tool(tool_name="user_behavior_agent", tool_description="Predicts how customers will react to each pricing model—estimating conversion rates, churn, and willingness to pay based on the SaaS description and target audience.")

@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from agents import Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
+from agents import Agent, Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
 import os
 from pydantic import BaseModel
 
@@ -28,3 +28,6 @@ Example:
 ---
 Based on the data, the **Tiered pricing model** is the recommended option. It maximizes MRR ($18,500), has a healthy LTV ($500), and a quick CAC payback (3 months). The Freemium model, while good for user acquisition, has lower conversion rates and longer payback periods, making it less optimal for sustainable growth.
 """
+
+recommendation_agent = Agent(name="Recommendation Agent", instructions=INSTRUCTION, model=google_model)
+tool_recommend = recommendation_agent.as_tool(tool_name="recommendation_agent",tool_description="Synthesizes insights from customer behavior and financial projections to recommend the most effective pricing strategy for the SaaS business.")
