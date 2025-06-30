@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
-from agents import Agent, Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput
+from agents import Agent, Runner, trace, function_tool, OpenAIChatCompletionsModel, input_guardrail, GuardrailFunctionOutput, ItemHelpers
 import os
 from pydantic import BaseModel
 from profitability_model_agent import profitability_tool
 from recommendation_agent import tool_recommend
 from user_behavior_agent import tool_user_behave
+from openai.types.responses import ResponseTextDeltaEvent
 import asyncio
 
 load_dotenv(override=True)
@@ -54,7 +55,24 @@ What pricing model should I use?
 
 async def test():
     with trace("Testing multi agents"):
-        result = await Runner.run(manager_agent, input=example_input)
-        print(result.final_output)
+        result = Runner.run_streamed(manager_agent, input=example_input)
+        print("=== Run starting ===")
+        async for event in result.stream_events():
+            if event.type == "raw_response_event" and isinstance(event.data, ResponseTextDeltaEvent):
+                print(event.data.delta, end="", flush=True)
+            if event.type == "raw_response_event":
+                continue
+            elif event.type == "agent_updated_stream_event":
+                print(f"Agent updated: {event.new_agent.name}")
+                continue
+            elif event.type == "run_item_stream_event":
+                if event.item.type == "tool_call_item":
+                    print("\n-- Tool was called")
+                elif event.item.type == "tool_call_output_item":
+                    print(f"\n-- Tool output: {event.item.output}")
+                else:
+                    pass
+
+    print("\n=== Run complete ===")
 
 asyncio.run(test())
