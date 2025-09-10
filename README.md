@@ -59,6 +59,4 @@ python manager_agent.py
 
 ---
 
-* Linear, deterministic multi-agent flow — easy to extend but intentionally simple.
-* Want me to: add the screenshot into `docs/architecture.png`, produce a single-file `pyproject.toml` snippet tuned to your imports, or create a tiny CI/test example? Pick one and I’ll generate it.
 
